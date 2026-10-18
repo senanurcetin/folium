@@ -972,6 +972,9 @@ class TopoJson(JSCSSMixin, Layer):
     tooltip: GeoJsonTooltip, Tooltip or str, default None
         Display a text when hovering over the object. Can utilize the data,
         see folium.GeoJsonTooltip for info on how to do that.
+    popup: GeoJsonPopup or Popup, default None
+        Show a different popup for each feature by passing a GeoJsonPopup object.
+        A Popup object may be used for static content.
 
     Examples
     --------
@@ -1032,6 +1035,7 @@ class TopoJson(JSCSSMixin, Layer):
         show: bool = True,
         smooth_factor: Optional[float] = None,
         tooltip: Union[str, Tooltip, None] = None,
+        popup: Optional["GeoJsonPopup"] = None,
     ):
         super().__init__(name=name, overlay=overlay, control=control, show=show)
         self._name = "TopoJson"
@@ -1059,6 +1063,8 @@ class TopoJson(JSCSSMixin, Layer):
             self.add_child(tooltip)
         elif tooltip is not None:
             self.add_child(Tooltip(tooltip))
+        if isinstance(popup, (GeoJsonPopup, Popup)):
+            self.add_child(popup)
 
     def style_data(self) -> None:
         """Applies self.style_function to each feature of self.data."""

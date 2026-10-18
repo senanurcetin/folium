@@ -86,6 +86,43 @@ def test_topojson_non_collection_geometry_detail(detail_type):
     assert "name" in map_.get_root().render()
 
 
+@pytest.mark.parametrize("dynamic", [True, False])
+def test_topojson_popup_keyword(dynamic):
+    """TopoJson accepts per-feature and static popups through the popup argument."""
+    topology = {
+        "type": "Topology",
+        "objects": {
+            "shapes": {
+                "type": "GeometryCollection",
+                "geometries": [
+                    {"type": "Polygon", "arcs": [[0]], "properties": {"name": "Alpha"}},
+                    {"type": "Polygon", "arcs": [[1]], "properties": {"name": "Beta"}},
+                ],
+            }
+        },
+        "arcs": [
+            [[0, 0], [3, 0], [0, 2], [-3, -2]],
+            [[5, 0], [3, 0], [0, 2], [-3, -2]],
+        ],
+        "transform": {"scale": [1, 1], "translate": [0, 0]},
+    }
+    popup = folium.GeoJsonPopup(fields=["name"]) if dynamic else folium.Popup("Static content")
+
+    map_ = folium.Map()
+    topojson = folium.TopoJson(topology, "objects.shapes", popup=popup).add_to(map_)
+
+    assert popup._parent is topojson
+    html = map_.get_root().render()
+    assert f"{topojson.get_name()}.bindPopup(" in html
+    if dynamic:
+        assert "layer.feature.properties[v]" in html
+        assert '"name"' in html
+        assert "Alpha" in html and "Beta" in html
+    else:
+        assert "Static content" in html
+
+
+
 @pytest.fixture
 def tmpl():
     yield ("""
