@@ -48,8 +48,6 @@ from folium.utilities import (
     get_obj_in_upper_tree,
     image_to_url,
     javascript_identifier_path_to_array_notation,
-    none_max,
-    none_min,
     remove_empty,
     validate_locations,
 )
