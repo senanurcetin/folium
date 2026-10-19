@@ -106,6 +106,10 @@ def test_topojson_bounds_use_selected_arcs(topojson_bounds_data):
     assert folium.TopoJson(topojson_bounds_data, "objects.near").get_bounds() == [[0, 0], [1, 2]]
     assert folium.TopoJson(topojson_bounds_data, "objects.far").get_bounds() == [[60, 100], [61, 102]]
 
+    map_ = folium.Map()
+    folium.TopoJson(topojson_bounds_data, "objects.near").add_to(map_)
+    assert map_.get_bounds() == [[0, 0], [1, 2]]
+
 
 def test_topojson_bounds_reversed_arc(topojson_bounds_data):
     topojson_bounds_data["objects"]["near"]["arcs"] = [[-2]]
