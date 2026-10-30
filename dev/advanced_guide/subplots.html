@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Subplots &#8212; Folium 0.1.dev2227+g7a10fcca2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=924e9346" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=3dac0a31"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_guide/subplots';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://python-visualization.github.io/folium/dev/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using colormaps" href="colormaps.html" />
+    <link rel="prev" title="Integrating Jenks Natural Break Optimization with choropleth" href="choropleth%20with%20Jenks%20natural%20breaks%20optimization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.dev2227+g7a10fcca2" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/folium_logo.png" class="logo__image only-light" alt=""/>
+    <img src="../_static/folium_logo.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Folium</p>
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../advanced_guide.html">
+    Advanced guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-visualization/folium" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../advanced_guide.html">
+    Advanced guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-visualization/folium" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="flask.html">Using folium with flask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="choropleth%20with%20Jenks%20natural%20breaks%20optimization.html">Integrating Jenks Natural Break Optimization with choropleth</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Subplots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="colormaps.html">Using colormaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="world_copy.html">Scrolling beyond the world edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_panes.html">Panes and CustomPane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geodedetic_image_overlay.html">Geodedetic image overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_tiles.html">Custom tiles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piechart_icons.html">Piechart icons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polygons_from_list_of_points.html">Creating a polygon from a list of points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customize_javascript_and_css.html">Customizing javascript or css resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="override_leaflet_class_methods.html">Overriding Leaflet class methods</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../advanced_guide.html" class="nav-link">Advanced guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Subplots</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="Subplots">
+<h1>Subplots<a class="headerlink" href="#Subplots" title="Link to this heading">#</a></h1>
+<section id="Two-maps-in-one-figure">
+<h2>Two maps in one figure<a class="headerlink" href="#Two-maps-in-one-figure" title="Link to this heading">#</a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">Map</span></code> automatically creates a <code class="docutils literal notranslate"><span class="pre">Figure</span></code> to put itself in. You can also do this manually, or in this example, create subplots to have two maps in one figure.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">branca</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+
+<span class="n">subplot1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">subplot2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">subplot1</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
+    <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">subplot2</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
+    <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">([</span><span class="mi">46</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">tiles</span><span class="o">=</span><span class="s2">"OpenStreetMap"</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_55a032af9caeb654023049586c843fdb {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+    &lt;style&gt; #div_b6af2701e17b1e590bb63574e22e931d {
+        position : absolute;
+        width : 45.0%;
+        height: 90.0%;
+        left: 2.5%;
+        top: 5.0%;
+    &lt;/style&gt;
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_b071116c2d6453f9a1bdaaf32b7094e7 {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+    &lt;style&gt; #div_68326bbbcdf44399bd5686e266e87f2a {
+        position : absolute;
+        width : 45.0%;
+        height: 90.0%;
+        left: 52.5%;
+        top: 5.0%;
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div id=&quot;div_b6af2701e17b1e590bb63574e22e931d&quot;&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_55a032af9caeb654023049586c843fdb&quot; &gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;div id=&quot;div_68326bbbcdf44399bd5686e266e87f2a&quot;&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_b071116c2d6453f9a1bdaaf32b7094e7&quot; &gt;&lt;/div&gt;
+        &lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+
+
+            var map_55a032af9caeb654023049586c843fdb = L.map(
+                &quot;map_55a032af9caeb654023049586c843fdb&quot;,
+                {
+                    center: [0.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 1,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_66ad0b6b4ba2de36d733bfc882210439 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_66ad0b6b4ba2de36d733bfc882210439.addTo(map_55a032af9caeb654023049586c843fdb);
+
+
+            var map_b071116c2d6453f9a1bdaaf32b7094e7 = L.map(
+                &quot;map_b071116c2d6453f9a1bdaaf32b7094e7&quot;,
+                {
+                    center: [46.0, 3.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 5,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_7c2db7e4949ca7227cdbd89aa5cc3ff9 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_7c2db7e4949ca7227cdbd89aa5cc3ff9.addTo(map_b071116c2d6453f9a1bdaaf32b7094e7);
+
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
+</div>
+</section>
+<section id="Vega-div-and-a-Map">
+<h2>Vega div and a Map<a class="headerlink" href="#Vega-div-and-a-Map" title="Link to this heading">#</a></h2>
+<p>Here we create a single figure in which we’ll embed two maps and two Vega charts. Note that this also works with <code class="docutils literal notranslate"><span class="pre">VegaLite</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">vincent</span>
+
+
+<span class="n">multi_iter2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"x"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,)),</span>
+    <span class="s2">"y"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,)),</span>
+<span class="p">}</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">vincent</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">multi_iter2</span><span class="p">,</span> <span class="n">iter_idx</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">420</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">scatter</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">branca</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+
+<span class="c1"># Create two maps.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span>
+    <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">zoom_start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">position</span><span class="o">=</span><span class="s2">"absolute"</span><span class="p">,</span>
+    <span class="n">left</span><span class="o">=</span><span class="s2">"0%"</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">m2</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span>
+    <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mi">46</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="n">tiles</span><span class="o">=</span><span class="s2">"OpenStreetMap"</span><span class="p">,</span>
+    <span class="n">zoom_start</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">position</span><span class="o">=</span><span class="s2">"absolute"</span><span class="p">,</span>
+    <span class="n">left</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span>
+    <span class="n">top</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Create two Vega charts</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Vega</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"absolute"</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">)</span>
+
+<span class="n">v2</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Vega</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"absolute"</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="s2">"0%"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">"50%"</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">"50%"</span>
+<span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+
+<span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/runner/micromamba/envs/TEST/lib/python3.14/site-packages/vincent/core.py:10: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
+  from pkg_resources import resource_string
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_172d30cb6dd49acb68a8862b5c878811 {
+                    position: absolute;
+                    width: 50.0vw;
+                    height: 50.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_7416cf6cba659d142c6ddb353990971a {
+                    position: absolute;
+                    width: 50.0vw;
+                    height: 50.0vh;
+
+                    left: 50.0%;
+                    top: 50.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/vega/1.4.3/vega.min.js&quot;&gt;&lt;/script&gt;
+
+            &lt;style&gt; #vega_ab69ee605a12488e9fa1f4c58b2ae8db {
+                position : absolute;
+                width : 50.0%;
+                height: 50.0%;
+                left: 50.0%;
+                top: 0.0%;
+            &lt;/style&gt;
+
+
+            &lt;style&gt; #vega_92c52f19b760bc44294f3e1064b5ddf4 {
+                position : absolute;
+                width : 50.0%;
+                height: 50.0%;
+                left: 0.0%;
+                top: 50.0%;
+            &lt;/style&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_172d30cb6dd49acb68a8862b5c878811&quot; &gt;&lt;/div&gt;
+
+
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_7416cf6cba659d142c6ddb353990971a&quot; &gt;&lt;/div&gt;
+
+
+            &lt;div id=&quot;vega_ab69ee605a12488e9fa1f4c58b2ae8db&quot;&gt;&lt;/div&gt;
+
+
+            &lt;div id=&quot;vega_92c52f19b760bc44294f3e1064b5ddf4&quot;&gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;script&gt;
+
+
+            var map_172d30cb6dd49acb68a8862b5c878811 = L.map(
+                &quot;map_172d30cb6dd49acb68a8862b5c878811&quot;,
+                {
+                    center: [0.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 1,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_886205c291da6f500c8f5d25e8c0ead8 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_886205c291da6f500c8f5d25e8c0ead8.addTo(map_172d30cb6dd49acb68a8862b5c878811);
+
+
+            var map_7416cf6cba659d142c6ddb353990971a = L.map(
+                &quot;map_7416cf6cba659d142c6ddb353990971a&quot;,
+                {
+                    center: [46.0, 3.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 4,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_44e06225964459f37d88ba5367311c89 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_44e06225964459f37d88ba5367311c89.addTo(map_7416cf6cba659d142c6ddb353990971a);
+
+
+            vega_parse({&quot;axes&quot;: [{&quot;scale&quot;: &quot;x&quot;, &quot;type&quot;: &quot;x&quot;}, {&quot;scale&quot;: &quot;y&quot;, &quot;type&quot;: &quot;y&quot;}], &quot;data&quot;: [{&quot;name&quot;: &quot;table&quot;, &quot;values&quot;: [{&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.148557288961356, &quot;val&quot;: 0.2616522216479613}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8918775291557307, &quot;val&quot;: 0.5259679509153109}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.30646284045391115, &quot;val&quot;: 0.7481886815418402}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6971683021142098, &quot;val&quot;: 0.8472933440417666}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.13139359261252426, &quot;val&quot;: 0.9064992950431078}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8498790006351358, &quot;val&quot;: 0.26415446390530384}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3875330632085121, &quot;val&quot;: 0.6552175571124864}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.19908241829598705, &quot;val&quot;: 0.6581570747388361}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.12783522365933941, &quot;val&quot;: 0.09185327930234655}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5891079516123006, &quot;val&quot;: 0.31824785765696717}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9750218223820658, &quot;val&quot;: 0.3312550602477494}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.893385414697317, &quot;val&quot;: 0.3894754472832277}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.41976434287783826, &quot;val&quot;: 0.5220446976145893}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.37572918448435744, &quot;val&quot;: 0.45642701392196394}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7650520567876453, &quot;val&quot;: 0.9939477942967506}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.24044633629318635, &quot;val&quot;: 0.3885756454751188}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.46342977627923376, &quot;val&quot;: 0.792999625088569}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.19103036045130206, &quot;val&quot;: 0.036364154810261784}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9572047425004722, &quot;val&quot;: 0.0697180223258963}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.31871039024574466, &quot;val&quot;: 0.4331496789151653}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5501365361479197, &quot;val&quot;: 0.16835379285855234}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3130495753040101, &quot;val&quot;: 0.9050030484582965}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.463868487808074, &quot;val&quot;: 0.4964074527195508}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7464786917058677, &quot;val&quot;: 0.017146511044276447}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7109948266886104, &quot;val&quot;: 0.05725575032283525}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9819116199933129, &quot;val&quot;: 0.7825956441542632}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6200479585675773, &quot;val&quot;: 0.3085908794476888}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.633579624299309, &quot;val&quot;: 0.01870461436513038}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.01139296691339553, &quot;val&quot;: 0.9488376824947933}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3850506889563451, &quot;val&quot;: 0.8646204027358809}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.40458661195050594, &quot;val&quot;: 0.9689316241439854}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6356389344369696, &quot;val&quot;: 0.2179379100799509}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9878334420118705, &quot;val&quot;: 0.49096722478090327}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7464442590102206, &quot;val&quot;: 0.9614190071085187}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9080772443452122, &quot;val&quot;: 0.8701974445160497}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.19859635975936463, &quot;val&quot;: 0.049365524564620844}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5493104955362845, &quot;val&quot;: 0.009521144549056837}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.01326560280321909, &quot;val&quot;: 0.13830339415009207}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2087588311530062, &quot;val&quot;: 0.13232999381033095}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4906670286369458, &quot;val&quot;: 0.06926374200062213}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.11154799040642316, &quot;val&quot;: 0.724073141283099}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.403281943320566, &quot;val&quot;: 0.6922473693924321}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5033707712354536, &quot;val&quot;: 0.8177206403637399}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.42619124993911595, &quot;val&quot;: 0.4143874305196549}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5680320065866841, &quot;val&quot;: 0.19368612414429864}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9571775668726151, &quot;val&quot;: 0.16520262254394302}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7393055803924904, &quot;val&quot;: 0.5144298798705368}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.14762009339420168, &quot;val&quot;: 0.07354373534078928}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5534350479632505, &quot;val&quot;: 0.02486117348993211}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.40627217245450764, &quot;val&quot;: 0.5603814711005969}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4261468799075647, &quot;val&quot;: 0.9372194304816585}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5206839299090337, &quot;val&quot;: 0.2874556691385246}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7332568670344727, &quot;val&quot;: 0.35490514609274826}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3438350291547687, &quot;val&quot;: 0.9084204172979355}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.30979489041179875, &quot;val&quot;: 0.7176197182157216}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5828529286926581, &quot;val&quot;: 0.6500126239457519}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9373199523849903, &quot;val&quot;: 0.3010694843450591}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.011865633227411854, &quot;val&quot;: 0.03770326724992801}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.22371495806774122, &quot;val&quot;: 0.8709357687838007}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.41077941577910626, &quot;val&quot;: 0.6372896607919699}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5794720974057199, &quot;val&quot;: 0.23738716611158894}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.725689991314976, &quot;val&quot;: 0.5426762639493272}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7359198842931447, &quot;val&quot;: 0.45544894841801764}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7509009795888236, &quot;val&quot;: 0.8265904593809467}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5490989052554236, &quot;val&quot;: 0.3074184236517741}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.762854639080986, &quot;val&quot;: 0.8992699658876265}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.23541356563429128, &quot;val&quot;: 0.011717673519143545}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6430060400286866, &quot;val&quot;: 0.6601360669481305}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9647121981463586, &quot;val&quot;: 0.8771100927013611}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.028490413709462703, &quot;val&quot;: 0.0874700606027442}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5791843253260005, &quot;val&quot;: 0.5538444716739716}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.23845147646360554, &quot;val&quot;: 0.629581795284801}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.23747177737147585, &quot;val&quot;: 0.676071225824204}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.43968759176390415, &quot;val&quot;: 0.9934519494813668}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3566676111041428, &quot;val&quot;: 0.006291907385622908}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.25648805342259284, &quot;val&quot;: 0.00467314401067509}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.08876722843244789, &quot;val&quot;: 0.2939508001153194}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4469989831321509, &quot;val&quot;: 0.6907788823727152}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.38649924811363956, &quot;val&quot;: 0.9683078202601556}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.44223279911021407, &quot;val&quot;: 0.6911077255238999}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7610894839738875, &quot;val&quot;: 0.9337770141538642}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.25540076589581295, &quot;val&quot;: 0.617359706682685}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.014777904387469731, &quot;val&quot;: 0.39246473233822377}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5135075735862982, &quot;val&quot;: 0.1019234274824572}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4612720269072621, &quot;val&quot;: 0.07677955931720515}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.28284608534852895, &quot;val&quot;: 0.5014533544127606}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6059575666135995, &quot;val&quot;: 0.58298654791848}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2988508422652346, &quot;val&quot;: 0.75296500090089}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8972690995823819, &quot;val&quot;: 0.5008388978359684}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2831903137726257, &quot;val&quot;: 0.5879323729666645}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8379151791521727, &quot;val&quot;: 0.8914537326944667}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.47925294576446253, &quot;val&quot;: 0.6644843545518232}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4578168574456237, &quot;val&quot;: 0.715065063587286}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2155978997528657, &quot;val&quot;: 0.7131120686745067}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7596675375399475, &quot;val&quot;: 0.7699544461032453}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.42576267889753894, &quot;val&quot;: 0.3089910881035306}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.10731407758498435, &quot;val&quot;: 0.2865727525477678}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6313451844888922, &quot;val&quot;: 0.04954090146456347}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.47552782724153153, &quot;val&quot;: 0.03310344883777505}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.11010115391244879, &quot;val&quot;: 0.2631920452983084}]}], &quot;height&quot;: 250, &quot;legends&quot;: [], &quot;marks&quot;: [{&quot;from&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;transform&quot;: [{&quot;keys&quot;: [&quot;data.col&quot;], &quot;type&quot;: &quot;facet&quot;}]}, &quot;marks&quot;: [{&quot;properties&quot;: {&quot;enter&quot;: {&quot;fill&quot;: {&quot;field&quot;: &quot;data.col&quot;, &quot;scale&quot;: &quot;color&quot;}, &quot;size&quot;: {&quot;value&quot;: 100}, &quot;x&quot;: {&quot;field&quot;: &quot;data.idx&quot;, &quot;scale&quot;: &quot;x&quot;}, &quot;y&quot;: {&quot;field&quot;: &quot;data.val&quot;, &quot;scale&quot;: &quot;y&quot;}}}, &quot;type&quot;: &quot;symbol&quot;}], &quot;type&quot;: &quot;group&quot;}], &quot;padding&quot;: &quot;auto&quot;, &quot;scales&quot;: [{&quot;domain&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;field&quot;: &quot;data.idx&quot;}, &quot;name&quot;: &quot;x&quot;, &quot;range&quot;: &quot;width&quot;, &quot;type&quot;: &quot;linear&quot;}, {&quot;domain&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;field&quot;: &quot;data.val&quot;}, &quot;name&quot;: &quot;y&quot;, &quot;nice&quot;: true, &quot;range&quot;: &quot;height&quot;}, {&quot;domain&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;field&quot;: &quot;data.col&quot;}, &quot;name&quot;: &quot;color&quot;, &quot;range&quot;: &quot;category20&quot;, &quot;type&quot;: &quot;ordinal&quot;}], &quot;width&quot;: 420},vega_ab69ee605a12488e9fa1f4c58b2ae8db);
+
+    function vega_parse(spec, div) {
+            vg.parse.spec(spec, function(chart) { chart({el:div}).update(); });}
+
+            vega_parse({&quot;axes&quot;: [{&quot;scale&quot;: &quot;x&quot;, &quot;type&quot;: &quot;x&quot;}, {&quot;scale&quot;: &quot;y&quot;, &quot;type&quot;: &quot;y&quot;}], &quot;data&quot;: [{&quot;name&quot;: &quot;table&quot;, &quot;values&quot;: [{&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.148557288961356, &quot;val&quot;: 0.2616522216479613}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8918775291557307, &quot;val&quot;: 0.5259679509153109}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.30646284045391115, &quot;val&quot;: 0.7481886815418402}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6971683021142098, &quot;val&quot;: 0.8472933440417666}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.13139359261252426, &quot;val&quot;: 0.9064992950431078}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8498790006351358, &quot;val&quot;: 0.26415446390530384}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3875330632085121, &quot;val&quot;: 0.6552175571124864}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.19908241829598705, &quot;val&quot;: 0.6581570747388361}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.12783522365933941, &quot;val&quot;: 0.09185327930234655}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5891079516123006, &quot;val&quot;: 0.31824785765696717}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9750218223820658, &quot;val&quot;: 0.3312550602477494}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.893385414697317, &quot;val&quot;: 0.3894754472832277}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.41976434287783826, &quot;val&quot;: 0.5220446976145893}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.37572918448435744, &quot;val&quot;: 0.45642701392196394}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7650520567876453, &quot;val&quot;: 0.9939477942967506}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.24044633629318635, &quot;val&quot;: 0.3885756454751188}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.46342977627923376, &quot;val&quot;: 0.792999625088569}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.19103036045130206, &quot;val&quot;: 0.036364154810261784}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9572047425004722, &quot;val&quot;: 0.0697180223258963}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.31871039024574466, &quot;val&quot;: 0.4331496789151653}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5501365361479197, &quot;val&quot;: 0.16835379285855234}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3130495753040101, &quot;val&quot;: 0.9050030484582965}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.463868487808074, &quot;val&quot;: 0.4964074527195508}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7464786917058677, &quot;val&quot;: 0.017146511044276447}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7109948266886104, &quot;val&quot;: 0.05725575032283525}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9819116199933129, &quot;val&quot;: 0.7825956441542632}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6200479585675773, &quot;val&quot;: 0.3085908794476888}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.633579624299309, &quot;val&quot;: 0.01870461436513038}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.01139296691339553, &quot;val&quot;: 0.9488376824947933}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3850506889563451, &quot;val&quot;: 0.8646204027358809}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.40458661195050594, &quot;val&quot;: 0.9689316241439854}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6356389344369696, &quot;val&quot;: 0.2179379100799509}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9878334420118705, &quot;val&quot;: 0.49096722478090327}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7464442590102206, &quot;val&quot;: 0.9614190071085187}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9080772443452122, &quot;val&quot;: 0.8701974445160497}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.19859635975936463, &quot;val&quot;: 0.049365524564620844}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5493104955362845, &quot;val&quot;: 0.009521144549056837}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.01326560280321909, &quot;val&quot;: 0.13830339415009207}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2087588311530062, &quot;val&quot;: 0.13232999381033095}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4906670286369458, &quot;val&quot;: 0.06926374200062213}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.11154799040642316, &quot;val&quot;: 0.724073141283099}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.403281943320566, &quot;val&quot;: 0.6922473693924321}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5033707712354536, &quot;val&quot;: 0.8177206403637399}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.42619124993911595, &quot;val&quot;: 0.4143874305196549}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5680320065866841, &quot;val&quot;: 0.19368612414429864}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9571775668726151, &quot;val&quot;: 0.16520262254394302}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7393055803924904, &quot;val&quot;: 0.5144298798705368}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.14762009339420168, &quot;val&quot;: 0.07354373534078928}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5534350479632505, &quot;val&quot;: 0.02486117348993211}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.40627217245450764, &quot;val&quot;: 0.5603814711005969}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4261468799075647, &quot;val&quot;: 0.9372194304816585}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5206839299090337, &quot;val&quot;: 0.2874556691385246}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7332568670344727, &quot;val&quot;: 0.35490514609274826}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3438350291547687, &quot;val&quot;: 0.9084204172979355}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.30979489041179875, &quot;val&quot;: 0.7176197182157216}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5828529286926581, &quot;val&quot;: 0.6500126239457519}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9373199523849903, &quot;val&quot;: 0.3010694843450591}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.011865633227411854, &quot;val&quot;: 0.03770326724992801}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.22371495806774122, &quot;val&quot;: 0.8709357687838007}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.41077941577910626, &quot;val&quot;: 0.6372896607919699}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5794720974057199, &quot;val&quot;: 0.23738716611158894}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.725689991314976, &quot;val&quot;: 0.5426762639493272}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7359198842931447, &quot;val&quot;: 0.45544894841801764}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7509009795888236, &quot;val&quot;: 0.8265904593809467}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5490989052554236, &quot;val&quot;: 0.3074184236517741}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.762854639080986, &quot;val&quot;: 0.8992699658876265}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.23541356563429128, &quot;val&quot;: 0.011717673519143545}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6430060400286866, &quot;val&quot;: 0.6601360669481305}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.9647121981463586, &quot;val&quot;: 0.8771100927013611}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.028490413709462703, &quot;val&quot;: 0.0874700606027442}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5791843253260005, &quot;val&quot;: 0.5538444716739716}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.23845147646360554, &quot;val&quot;: 0.629581795284801}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.23747177737147585, &quot;val&quot;: 0.676071225824204}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.43968759176390415, &quot;val&quot;: 0.9934519494813668}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.3566676111041428, &quot;val&quot;: 0.006291907385622908}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.25648805342259284, &quot;val&quot;: 0.00467314401067509}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.08876722843244789, &quot;val&quot;: 0.2939508001153194}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4469989831321509, &quot;val&quot;: 0.6907788823727152}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.38649924811363956, &quot;val&quot;: 0.9683078202601556}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.44223279911021407, &quot;val&quot;: 0.6911077255238999}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7610894839738875, &quot;val&quot;: 0.9337770141538642}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.25540076589581295, &quot;val&quot;: 0.617359706682685}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.014777904387469731, &quot;val&quot;: 0.39246473233822377}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.5135075735862982, &quot;val&quot;: 0.1019234274824572}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4612720269072621, &quot;val&quot;: 0.07677955931720515}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.28284608534852895, &quot;val&quot;: 0.5014533544127606}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6059575666135995, &quot;val&quot;: 0.58298654791848}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2988508422652346, &quot;val&quot;: 0.75296500090089}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8972690995823819, &quot;val&quot;: 0.5008388978359684}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2831903137726257, &quot;val&quot;: 0.5879323729666645}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.8379151791521727, &quot;val&quot;: 0.8914537326944667}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.47925294576446253, &quot;val&quot;: 0.6644843545518232}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.4578168574456237, &quot;val&quot;: 0.715065063587286}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.2155978997528657, &quot;val&quot;: 0.7131120686745067}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.7596675375399475, &quot;val&quot;: 0.7699544461032453}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.42576267889753894, &quot;val&quot;: 0.3089910881035306}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.10731407758498435, &quot;val&quot;: 0.2865727525477678}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.6313451844888922, &quot;val&quot;: 0.04954090146456347}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.47552782724153153, &quot;val&quot;: 0.03310344883777505}, {&quot;col&quot;: &quot;y&quot;, &quot;idx&quot;: 0.11010115391244879, &quot;val&quot;: 0.2631920452983084}]}], &quot;height&quot;: 250, &quot;legends&quot;: [], &quot;marks&quot;: [{&quot;from&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;transform&quot;: [{&quot;keys&quot;: [&quot;data.col&quot;], &quot;type&quot;: &quot;facet&quot;}]}, &quot;marks&quot;: [{&quot;properties&quot;: {&quot;enter&quot;: {&quot;fill&quot;: {&quot;field&quot;: &quot;data.col&quot;, &quot;scale&quot;: &quot;color&quot;}, &quot;size&quot;: {&quot;value&quot;: 100}, &quot;x&quot;: {&quot;field&quot;: &quot;data.idx&quot;, &quot;scale&quot;: &quot;x&quot;}, &quot;y&quot;: {&quot;field&quot;: &quot;data.val&quot;, &quot;scale&quot;: &quot;y&quot;}}}, &quot;type&quot;: &quot;symbol&quot;}], &quot;type&quot;: &quot;group&quot;}], &quot;padding&quot;: &quot;auto&quot;, &quot;scales&quot;: [{&quot;domain&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;field&quot;: &quot;data.idx&quot;}, &quot;name&quot;: &quot;x&quot;, &quot;range&quot;: &quot;width&quot;, &quot;type&quot;: &quot;linear&quot;}, {&quot;domain&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;field&quot;: &quot;data.val&quot;}, &quot;name&quot;: &quot;y&quot;, &quot;nice&quot;: true, &quot;range&quot;: &quot;height&quot;}, {&quot;domain&quot;: {&quot;data&quot;: &quot;table&quot;, &quot;field&quot;: &quot;data.col&quot;}, &quot;name&quot;: &quot;color&quot;, &quot;range&quot;: &quot;category20&quot;, &quot;type&quot;: &quot;ordinal&quot;}], &quot;width&quot;: 420},vega_92c52f19b760bc44294f3e1064b5ddf4);
+
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="choropleth%20with%20Jenks%20natural%20breaks%20optimization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Integrating Jenks Natural Break Optimization with choropleth</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="colormaps.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using colormaps</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Two-maps-in-one-figure">Two maps in one figure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Vega-div-and-a-Map">Vega div and a Map</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/advanced_guide/subplots.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+Folium version 0.1.dev2227+g7a10fcca2</div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2013-2026, Rob Story.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

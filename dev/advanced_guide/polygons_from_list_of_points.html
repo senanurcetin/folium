@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Creating a polygon from a list of points &#8212; Folium 0.1.dev2227+g7a10fcca2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=924e9346" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=3dac0a31"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_guide/polygons_from_list_of_points';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://python-visualization.github.io/folium/dev/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Customizing javascript or css resources" href="customize_javascript_and_css.html" />
+    <link rel="prev" title="Piechart icons" href="piechart_icons.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.dev2227+g7a10fcca2" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/folium_logo.png" class="logo__image only-light" alt=""/>
+    <img src="../_static/folium_logo.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Folium</p>
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../advanced_guide.html">
+    Advanced guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-visualization/folium" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../advanced_guide.html">
+    Advanced guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-visualization/folium" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="flask.html">Using folium with flask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="choropleth%20with%20Jenks%20natural%20breaks%20optimization.html">Integrating Jenks Natural Break Optimization with choropleth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subplots.html">Subplots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="colormaps.html">Using colormaps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="world_copy.html">Scrolling beyond the world edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_panes.html">Panes and CustomPane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geodedetic_image_overlay.html">Geodedetic image overlay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_tiles.html">Custom tiles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piechart_icons.html">Piechart icons</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Creating a polygon from a list of points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customize_javascript_and_css.html">Customizing javascript or css resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="override_leaflet_class_methods.html">Overriding Leaflet class methods</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../advanced_guide.html" class="nav-link">Advanced guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Creating a polygon from a list of points</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="Creating-a-polygon-from-a-list-of-points">
+<h1>Creating a polygon from a list of points<a class="headerlink" href="#Creating-a-polygon-from-a-list-of-points" title="Link to this heading">#</a></h1>
+<p>For many of those working with geo data it is a common task being asked to create a polygon from a list of points. More specific, to create a polygon that wraps around those points in a meaningful manner. So, there are several sources in the web explaining how to create the shape (see sources at end of document). This example notebook is the application of those solutions to folium maps.</p>
+<section id="Helpers">
+<h2>Helpers<a class="headerlink" href="#Helpers" title="Link to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">folium</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvexHull</span>
+
+
+<span class="c1"># Function to create a list of some random points</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">randome_points</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="n">LON_min</span><span class="p">,</span> <span class="n">LON_max</span><span class="p">,</span> <span class="n">LAT_min</span><span class="p">,</span> <span class="n">LAT_max</span><span class="p">):</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">LON_min</span><span class="p">,</span> <span class="n">LON_max</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">LAT_min</span><span class="p">,</span> <span class="n">LAT_max</span><span class="p">))</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">points</span>
+
+
+<span class="c1"># Function to draw points in the map</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_points</span><span class="p">(</span><span class="n">map_object</span><span class="p">,</span> <span class="n">list_of_points</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">line_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">FeatureGroup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">list_of_points</span><span class="p">:</span>
+        <span class="n">fg</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
+            <span class="n">folium</span><span class="o">.</span><span class="n">CircleMarker</span><span class="p">(</span>
+                <span class="n">point</span><span class="p">,</span>
+                <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span>
+                <span class="n">fill_color</span><span class="o">=</span><span class="n">fill_color</span><span class="p">,</span>
+                <span class="n">popup</span><span class="o">=</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">text</span><span class="p">)),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">map_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Convex-hull">
+<h2>Convex hull<a class="headerlink" href="#Convex-hull" title="Link to this heading">#</a></h2>
+<p>The convex hull is probably the most common approach - its goal is to create the smallest polygon that contains all points from a given list. The scipy.spatial package provides this algorithm (<a class="reference external" href="https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.spatial.ConvexHull.html">https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.spatial.ConvexHull.html</a>, accessed 29.12.2018).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Function that takes a map and a list of points (LON,LAT tuples) and</span>
+<span class="c1"># returns a map with the convex hull polygon from the points as a new layer</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_convexhull_polygon</span><span class="p">(</span>
+    <span class="n">map_object</span><span class="p">,</span> <span class="n">list_of_points</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">line_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">text</span>
+<span class="p">):</span>
+
+    <span class="c1"># Since it is pointless to draw a convex hull polygon around less than 3 points check len of input</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Create the convex hull using scipy.spatial</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="p">[</span><span class="n">list_of_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">)</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
+
+    <span class="c1"># Create feature group, add the polygon and add the feature group to the map</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">FeatureGroup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">)</span>
+    <span class="n">fg</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
+        <span class="n">folium</span><span class="o">.</span><span class="n">vector_layers</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+            <span class="n">locations</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span>
+            <span class="n">fill_color</span><span class="o">=</span><span class="n">fill_color</span><span class="p">,</span>
+            <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+            <span class="n">popup</span><span class="o">=</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">text</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">map_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">map_object</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize map</span>
+<span class="n">my_convexhull_map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.5</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Create a convex hull polygon that contains some points</span>
+<span class="n">list_of_points</span> <span class="o">=</span> <span class="n">randome_points</span><span class="p">(</span>
+    <span class="n">amount</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">LON_min</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span> <span class="n">LON_max</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span> <span class="n">LAT_min</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">LAT_max</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="n">create_convexhull_polygon</span><span class="p">(</span>
+    <span class="n">my_convexhull_map</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example convex hull"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"lightblue"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"lightskyblue"</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example convex hull"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">draw_points</span><span class="p">(</span>
+    <span class="n">my_convexhull_map</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example points for convex hull"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"royalblue"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"royalblue"</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example point for convex hull"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Add layer control and show map</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">my_convexhull_map</span><span class="p">)</span>
+<span class="n">my_convexhull_map</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_22d4f25bcee29dc1f720193e6dc23cca {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+&lt;/head&gt;
+&lt;body&gt;
+
+
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_22d4f25bcee29dc1f720193e6dc23cca&quot; &gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;script&gt;
+
+
+            var map_22d4f25bcee29dc1f720193e6dc23cca = L.map(
+                &quot;map_22d4f25bcee29dc1f720193e6dc23cca&quot;,
+                {
+                    center: [48.5, 9.5],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 8,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_605352e8bf76f0ce96458c1ad2b9d70d = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_605352e8bf76f0ce96458c1ad2b9d70d.addTo(map_22d4f25bcee29dc1f720193e6dc23cca);
+
+
+            var feature_group_157a5fe42addd8a896d9fd1bfac676d3 = L.featureGroup(
+                {
+}
+            );
+
+
+            var polygon_e3361fd20839ababe4c5c5484b588b1f = L.polygon(
+                [[48.070441768891754, 9.966092383484712], [48.04791719984115, 9.399086638038694], [48.47426016307589, 9.091615487769609], [48.82714616865618, 9.115745954692818], [48.63989461800166, 9.677419604619283], [48.434714778132246, 9.797069157701875]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;lightblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lightskyblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 5}
+            ).addTo(feature_group_157a5fe42addd8a896d9fd1bfac676d3);
+
+
+        var popup_491502660189c4b39d6a305359cdac5f = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_9c926a8a9573a9139c4374a682362e0e = $(`&lt;div id=&quot;html_9c926a8a9573a9139c4374a682362e0e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example convex hull&lt;/div&gt;`)[0];
+                popup_491502660189c4b39d6a305359cdac5f.setContent(html_9c926a8a9573a9139c4374a682362e0e);
+
+
+
+        polygon_e3361fd20839ababe4c5c5484b588b1f.bindPopup(popup_491502660189c4b39d6a305359cdac5f)
+        ;
+
+
+
+
+            feature_group_157a5fe42addd8a896d9fd1bfac676d3.addTo(map_22d4f25bcee29dc1f720193e6dc23cca);
+
+
+            var feature_group_05d64b5d6f14b6e920c5c02c57f4c316 = L.featureGroup(
+                {
+}
+            );
+
+
+            var circle_marker_efbf665fb45b1509b8f486e839c00681 = L.circleMarker(
+                [48.04791719984115, 9.399086638038694],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_1e7d0916b20e52072218f7310bf08b6b = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_04ac84b3ec39da4a8ff3373291765832 = $(`&lt;div id=&quot;html_04ac84b3ec39da4a8ff3373291765832&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_1e7d0916b20e52072218f7310bf08b6b.setContent(html_04ac84b3ec39da4a8ff3373291765832);
+
+
+
+        circle_marker_efbf665fb45b1509b8f486e839c00681.bindPopup(popup_1e7d0916b20e52072218f7310bf08b6b)
+        ;
+
+
+
+
+            var circle_marker_e0b3b4ae38da7079001bed7a63196839 = L.circleMarker(
+                [48.47426016307589, 9.091615487769609],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_827881a572435ff6b8a406d185fadd71 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_28975cff08b087059d2a807914c4cf73 = $(`&lt;div id=&quot;html_28975cff08b087059d2a807914c4cf73&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_827881a572435ff6b8a406d185fadd71.setContent(html_28975cff08b087059d2a807914c4cf73);
+
+
+
+        circle_marker_e0b3b4ae38da7079001bed7a63196839.bindPopup(popup_827881a572435ff6b8a406d185fadd71)
+        ;
+
+
+
+
+            var circle_marker_3c4a75fcbcf12bb0ba9bc26be92faaf4 = L.circleMarker(
+                [48.50740568482537, 9.570726006437285],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_d28f96727c0fbc2f8880a41013f024a6 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_c8f07ccea1242ea26a3e721e834850ef = $(`&lt;div id=&quot;html_c8f07ccea1242ea26a3e721e834850ef&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_d28f96727c0fbc2f8880a41013f024a6.setContent(html_c8f07ccea1242ea26a3e721e834850ef);
+
+
+
+        circle_marker_3c4a75fcbcf12bb0ba9bc26be92faaf4.bindPopup(popup_d28f96727c0fbc2f8880a41013f024a6)
+        ;
+
+
+
+
+            var circle_marker_fb82fb6f772de8d5da4de83edff42958 = L.circleMarker(
+                [48.434714778132246, 9.797069157701875],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_b67dc2387419562aa7011b3322c7d5dc = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_1e328cee65750314e3f49bfcc0812faf = $(`&lt;div id=&quot;html_1e328cee65750314e3f49bfcc0812faf&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_b67dc2387419562aa7011b3322c7d5dc.setContent(html_1e328cee65750314e3f49bfcc0812faf);
+
+
+
+        circle_marker_fb82fb6f772de8d5da4de83edff42958.bindPopup(popup_b67dc2387419562aa7011b3322c7d5dc)
+        ;
+
+
+
+
+            var circle_marker_89322bfca9c89a165917e7c1da4f5a4c = L.circleMarker(
+                [48.66203806661885, 9.422272583150372],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_8f3b6a8333886d9d766a727b1337cbad = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_02cb84f92b80240f407b20b588d203a8 = $(`&lt;div id=&quot;html_02cb84f92b80240f407b20b588d203a8&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_8f3b6a8333886d9d766a727b1337cbad.setContent(html_02cb84f92b80240f407b20b588d203a8);
+
+
+
+        circle_marker_89322bfca9c89a165917e7c1da4f5a4c.bindPopup(popup_8f3b6a8333886d9d766a727b1337cbad)
+        ;
+
+
+
+
+            var circle_marker_b5d2c2508fdd6f8877e5b4c12a3a11c4 = L.circleMarker(
+                [48.82714616865618, 9.115745954692818],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_43cc11111e4d5dc575411274262c4fb1 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_793d14f6065bf15e241387a4d4015889 = $(`&lt;div id=&quot;html_793d14f6065bf15e241387a4d4015889&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_43cc11111e4d5dc575411274262c4fb1.setContent(html_793d14f6065bf15e241387a4d4015889);
+
+
+
+        circle_marker_b5d2c2508fdd6f8877e5b4c12a3a11c4.bindPopup(popup_43cc11111e4d5dc575411274262c4fb1)
+        ;
+
+
+
+
+            var circle_marker_a34e0a7d1edf7349f4d89ccb01414951 = L.circleMarker(
+                [48.070441768891754, 9.966092383484712],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_04758732865df35996c0dd368c03125c = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_23b277d43338575543f8c572880d863f = $(`&lt;div id=&quot;html_23b277d43338575543f8c572880d863f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_04758732865df35996c0dd368c03125c.setContent(html_23b277d43338575543f8c572880d863f);
+
+
+
+        circle_marker_a34e0a7d1edf7349f4d89ccb01414951.bindPopup(popup_04758732865df35996c0dd368c03125c)
+        ;
+
+
+
+
+            var circle_marker_7df91d0651a25380595a007a8f23f81f = L.circleMarker(
+                [48.67621312542579, 9.535352909383612],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_df6e2e009fe2fac823e3ee99e031941b = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_30a975313420ec2bddb207e329a6f6ab = $(`&lt;div id=&quot;html_30a975313420ec2bddb207e329a6f6ab&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_df6e2e009fe2fac823e3ee99e031941b.setContent(html_30a975313420ec2bddb207e329a6f6ab);
+
+
+
+        circle_marker_7df91d0651a25380595a007a8f23f81f.bindPopup(popup_df6e2e009fe2fac823e3ee99e031941b)
+        ;
+
+
+
+
+            var circle_marker_3c84f76b14d1aebf8300ba46d0289edd = L.circleMarker(
+                [48.68069804354665, 9.26030753054063],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_ca88fcec981edc70b3133b43b31aa751 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_3ca8d34a52e39847db610570ccf7ba2c = $(`&lt;div id=&quot;html_3ca8d34a52e39847db610570ccf7ba2c&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_ca88fcec981edc70b3133b43b31aa751.setContent(html_3ca8d34a52e39847db610570ccf7ba2c);
+
+
+
+        circle_marker_3c84f76b14d1aebf8300ba46d0289edd.bindPopup(popup_ca88fcec981edc70b3133b43b31aa751)
+        ;
+
+
+
+
+            var circle_marker_4d8393ddee0b1f5c39de10698cde4975 = L.circleMarker(
+                [48.63989461800166, 9.677419604619283],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_05d64b5d6f14b6e920c5c02c57f4c316);
+
+
+        var popup_3bc9dee171792d539a628ce2ff2ac0d7 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_f1b1bef69f842ccc4fa7e33004622863 = $(`&lt;div id=&quot;html_f1b1bef69f842ccc4fa7e33004622863&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_3bc9dee171792d539a628ce2ff2ac0d7.setContent(html_f1b1bef69f842ccc4fa7e33004622863);
+
+
+
+        circle_marker_4d8393ddee0b1f5c39de10698cde4975.bindPopup(popup_3bc9dee171792d539a628ce2ff2ac0d7)
+        ;
+
+
+
+
+            feature_group_05d64b5d6f14b6e920c5c02c57f4c316.addTo(map_22d4f25bcee29dc1f720193e6dc23cca);
+
+
+            var layer_control_15bbb32fa57f07ad1158fa42c27382ed_layers = {
+                base_layers : {
+                    &quot;openstreetmap&quot; : tile_layer_605352e8bf76f0ce96458c1ad2b9d70d,
+                },
+                overlays :  {
+                    &quot;Example convex hull&quot; : feature_group_157a5fe42addd8a896d9fd1bfac676d3,
+                    &quot;Example points for convex hull&quot; : feature_group_05d64b5d6f14b6e920c5c02c57f4c316,
+                },
+            };
+            let layer_control_15bbb32fa57f07ad1158fa42c27382ed = L.control.layers(
+                layer_control_15bbb32fa57f07ad1158fa42c27382ed_layers.base_layers,
+                layer_control_15bbb32fa57f07ad1158fa42c27382ed_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_22d4f25bcee29dc1f720193e6dc23cca);
+
+
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
+</div>
+</section>
+<section id="Envelope">
+<h2>Envelope<a class="headerlink" href="#Envelope" title="Link to this heading">#</a></h2>
+<p>The envelope is another interesting approach - its goal is to create a box that contains all points from a given list.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_envelope_polygon</span><span class="p">(</span>
+    <span class="n">map_object</span><span class="p">,</span> <span class="n">list_of_points</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">line_color</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">text</span>
+<span class="p">):</span>
+
+    <span class="c1"># Since it is pointless to draw a box around less than 2 points check len of input</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Find the edges of box</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">itemgetter</span>
+
+    <span class="n">list_of_points</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">x_min</span> <span class="o">=</span> <span class="n">list_of_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x_max</span> <span class="o">=</span> <span class="n">list_of_points</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">list_of_points</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">y_min</span> <span class="o">=</span> <span class="n">list_of_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y_max</span> <span class="o">=</span> <span class="n">list_of_points</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">list_of_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">upper_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_min</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_max</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">upper_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_max</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_max</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">lower_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_max</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_min</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">lower_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_min</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_min</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[</span><span class="n">upper_left</span><span class="p">,</span> <span class="n">upper_right</span><span class="p">,</span> <span class="n">lower_right</span><span class="p">,</span> <span class="n">lower_left</span><span class="p">]</span>
+
+    <span class="c1"># Create feature group, add the polygon and add the feature group to the map</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">FeatureGroup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">)</span>
+    <span class="n">fg</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
+        <span class="n">folium</span><span class="o">.</span><span class="n">vector_layers</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+            <span class="n">locations</span><span class="o">=</span><span class="n">edges</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">line_color</span><span class="p">,</span>
+            <span class="n">fill_color</span><span class="o">=</span><span class="n">fill_color</span><span class="p">,</span>
+            <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+            <span class="n">popup</span><span class="o">=</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">text</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">map_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">map_object</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize map</span>
+<span class="n">my_envelope_map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">49.5</span><span class="p">,</span> <span class="mf">8.5</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Create an envelope polygon that contains some points</span>
+<span class="n">list_of_points</span> <span class="o">=</span> <span class="n">randome_points</span><span class="p">(</span>
+    <span class="n">amount</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">LON_min</span><span class="o">=</span><span class="mf">49.1</span><span class="p">,</span> <span class="n">LON_max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">LAT_min</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">LAT_max</span><span class="o">=</span><span class="mi">9</span>
+<span class="p">)</span>
+
+<span class="n">create_envelope_polygon</span><span class="p">(</span>
+    <span class="n">my_envelope_map</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example envelope"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"indianred"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example envelope"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">draw_points</span><span class="p">(</span>
+    <span class="n">my_envelope_map</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example points for envelope"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example point for envelope"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Add layer control and show map</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">my_envelope_map</span><span class="p">)</span>
+<span class="n">my_envelope_map</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_ad26914241f8c61866900652c94a8b19 {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+&lt;/head&gt;
+&lt;body&gt;
+
+
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_ad26914241f8c61866900652c94a8b19&quot; &gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;script&gt;
+
+
+            var map_ad26914241f8c61866900652c94a8b19 = L.map(
+                &quot;map_ad26914241f8c61866900652c94a8b19&quot;,
+                {
+                    center: [49.5, 8.5],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 8,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_54cac83b1d473257a577cdb0a36d12ca = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_54cac83b1d473257a577cdb0a36d12ca.addTo(map_ad26914241f8c61866900652c94a8b19);
+
+
+            var feature_group_e50d6158aabdfd8e10db74981d9c12e9 = L.featureGroup(
+                {
+}
+            );
+
+
+            var polygon_78506b337d44d74b14ef2a52073b17fe = L.polygon(
+                [[49.145944423029505, 8.927861061863082], [49.96399772428308, 8.927861061863082], [49.96399772428308, 8.049769348184896], [49.145944423029505, 8.049769348184896]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;indianred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 5}
+            ).addTo(feature_group_e50d6158aabdfd8e10db74981d9c12e9);
+
+
+        var popup_cb82b8b62b653d8953bd6890fbf97fb3 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_0089f109e9f71c81d1c22dfed1304a70 = $(`&lt;div id=&quot;html_0089f109e9f71c81d1c22dfed1304a70&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example envelope&lt;/div&gt;`)[0];
+                popup_cb82b8b62b653d8953bd6890fbf97fb3.setContent(html_0089f109e9f71c81d1c22dfed1304a70);
+
+
+
+        polygon_78506b337d44d74b14ef2a52073b17fe.bindPopup(popup_cb82b8b62b653d8953bd6890fbf97fb3)
+        ;
+
+
+
+
+            feature_group_e50d6158aabdfd8e10db74981d9c12e9.addTo(map_ad26914241f8c61866900652c94a8b19);
+
+
+            var feature_group_f7378e19a8dd62e17d1359dd4339d1f3 = L.featureGroup(
+                {
+}
+            );
+
+
+            var circle_marker_54122a3b7d10773e83b08e4b135ede08 = L.circleMarker(
+                [49.145944423029505, 8.20761010526447],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_5f30448f26eb2855dd278f0e77f0fc6d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_3fd1d086abe0481fbc3d68c043945e83 = $(`&lt;div id=&quot;html_3fd1d086abe0481fbc3d68c043945e83&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_5f30448f26eb2855dd278f0e77f0fc6d.setContent(html_3fd1d086abe0481fbc3d68c043945e83);
+
+
+
+        circle_marker_54122a3b7d10773e83b08e4b135ede08.bindPopup(popup_5f30448f26eb2855dd278f0e77f0fc6d)
+        ;
+
+
+
+
+            var circle_marker_8af3e8b7856419bc04c4eb013c8a986e = L.circleMarker(
+                [49.90309728477243, 8.89614554010329],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_7d182471850cdc9a05e921cecda1618c = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_63babeebb6fc26597e4c5fb8af220c2e = $(`&lt;div id=&quot;html_63babeebb6fc26597e4c5fb8af220c2e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_7d182471850cdc9a05e921cecda1618c.setContent(html_63babeebb6fc26597e4c5fb8af220c2e);
+
+
+
+        circle_marker_8af3e8b7856419bc04c4eb013c8a986e.bindPopup(popup_7d182471850cdc9a05e921cecda1618c)
+        ;
+
+
+
+
+            var circle_marker_b979f5c281314ad5d738f1a73567fa10 = L.circleMarker(
+                [49.548591724537744, 8.82489962257336],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_5836c5d3d82b3d71b59381d6d8257a8b = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_82829a64c666d963501d88376a4cd1b9 = $(`&lt;div id=&quot;html_82829a64c666d963501d88376a4cd1b9&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_5836c5d3d82b3d71b59381d6d8257a8b.setContent(html_82829a64c666d963501d88376a4cd1b9);
+
+
+
+        circle_marker_b979f5c281314ad5d738f1a73567fa10.bindPopup(popup_5836c5d3d82b3d71b59381d6d8257a8b)
+        ;
+
+
+
+
+            var circle_marker_6ba454b926ab5aa9c9b591b0f1a83fb5 = L.circleMarker(
+                [49.96399772428308, 8.049769348184896],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_a25d567e2ab688785bf7e1156f0dd42c = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_181ecdf51c2cec097de7491f5c42c0ff = $(`&lt;div id=&quot;html_181ecdf51c2cec097de7491f5c42c0ff&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_a25d567e2ab688785bf7e1156f0dd42c.setContent(html_181ecdf51c2cec097de7491f5c42c0ff);
+
+
+
+        circle_marker_6ba454b926ab5aa9c9b591b0f1a83fb5.bindPopup(popup_a25d567e2ab688785bf7e1156f0dd42c)
+        ;
+
+
+
+
+            var circle_marker_ce2e9e6bed0b643ee85f2319b7491185 = L.circleMarker(
+                [49.33994375186469, 8.429503901677696],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_6f6d17829568a1b25f18647335c9023b = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_ae4407e229b4ef326886cf68d45a6707 = $(`&lt;div id=&quot;html_ae4407e229b4ef326886cf68d45a6707&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_6f6d17829568a1b25f18647335c9023b.setContent(html_ae4407e229b4ef326886cf68d45a6707);
+
+
+
+        circle_marker_ce2e9e6bed0b643ee85f2319b7491185.bindPopup(popup_6f6d17829568a1b25f18647335c9023b)
+        ;
+
+
+
+
+            var circle_marker_c3fd6401b0e9d642a959f954d184f778 = L.circleMarker(
+                [49.25797125050543, 8.927861061863082],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_dfb085107cb2a8d2d06952cf83f5fb03 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_bff7971cd9d055e48215216ca6c4f0ab = $(`&lt;div id=&quot;html_bff7971cd9d055e48215216ca6c4f0ab&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_dfb085107cb2a8d2d06952cf83f5fb03.setContent(html_bff7971cd9d055e48215216ca6c4f0ab);
+
+
+
+        circle_marker_c3fd6401b0e9d642a959f954d184f778.bindPopup(popup_dfb085107cb2a8d2d06952cf83f5fb03)
+        ;
+
+
+
+
+            var circle_marker_2adc48a3ac39a31dc20bd626e85aed63 = L.circleMarker(
+                [49.27314404268235, 8.438482109011566],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_bc783b5a657a42517db6c6b24461cdee = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_6c128597e4ed3bfd5b495ba666052584 = $(`&lt;div id=&quot;html_6c128597e4ed3bfd5b495ba666052584&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_bc783b5a657a42517db6c6b24461cdee.setContent(html_6c128597e4ed3bfd5b495ba666052584);
+
+
+
+        circle_marker_2adc48a3ac39a31dc20bd626e85aed63.bindPopup(popup_bc783b5a657a42517db6c6b24461cdee)
+        ;
+
+
+
+
+            var circle_marker_13a915139acbf7f0c8e6b40a11df3af6 = L.circleMarker(
+                [49.21109050912906, 8.212446460804896],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_e0579ad52e3949c7eec0dc9427c8c73a = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_48ebb964ae6523c7ade8119acbe44512 = $(`&lt;div id=&quot;html_48ebb964ae6523c7ade8119acbe44512&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_e0579ad52e3949c7eec0dc9427c8c73a.setContent(html_48ebb964ae6523c7ade8119acbe44512);
+
+
+
+        circle_marker_13a915139acbf7f0c8e6b40a11df3af6.bindPopup(popup_e0579ad52e3949c7eec0dc9427c8c73a)
+        ;
+
+
+
+
+            var circle_marker_817d3a5b907293bc6d3e0208e3b6ac99 = L.circleMarker(
+                [49.21491631863105, 8.071272175821303],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_47e8adf6baca4e213aeed6948837317d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_80f392493554295ee6428092e21cc4b0 = $(`&lt;div id=&quot;html_80f392493554295ee6428092e21cc4b0&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_47e8adf6baca4e213aeed6948837317d.setContent(html_80f392493554295ee6428092e21cc4b0);
+
+
+
+        circle_marker_817d3a5b907293bc6d3e0208e3b6ac99.bindPopup(popup_47e8adf6baca4e213aeed6948837317d)
+        ;
+
+
+
+
+            var circle_marker_370abbbaaa0346e8e9d29a06d118d9e0 = L.circleMarker(
+                [49.782760480434625, 8.673310719880238],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_f7378e19a8dd62e17d1359dd4339d1f3);
+
+
+        var popup_b7c08f8c4fb80480646d247e65263b6e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_e49d35b4ee893b906ade6b1a1be7de91 = $(`&lt;div id=&quot;html_e49d35b4ee893b906ade6b1a1be7de91&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_b7c08f8c4fb80480646d247e65263b6e.setContent(html_e49d35b4ee893b906ade6b1a1be7de91);
+
+
+
+        circle_marker_370abbbaaa0346e8e9d29a06d118d9e0.bindPopup(popup_b7c08f8c4fb80480646d247e65263b6e)
+        ;
+
+
+
+
+            feature_group_f7378e19a8dd62e17d1359dd4339d1f3.addTo(map_ad26914241f8c61866900652c94a8b19);
+
+
+            var layer_control_9f62feb9465ccba43b4171fe8b139309_layers = {
+                base_layers : {
+                    &quot;openstreetmap&quot; : tile_layer_54cac83b1d473257a577cdb0a36d12ca,
+                },
+                overlays :  {
+                    &quot;Example envelope&quot; : feature_group_e50d6158aabdfd8e10db74981d9c12e9,
+                    &quot;Example points for envelope&quot; : feature_group_f7378e19a8dd62e17d1359dd4339d1f3,
+                },
+            };
+            let layer_control_9f62feb9465ccba43b4171fe8b139309 = L.control.layers(
+                layer_control_9f62feb9465ccba43b4171fe8b139309_layers.base_layers,
+                layer_control_9f62feb9465ccba43b4171fe8b139309_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_ad26914241f8c61866900652c94a8b19);
+
+
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
+</div>
+</section>
+<section id="Concave-hull-(alpha-shape)">
+<h2>Concave hull (alpha shape)<a class="headerlink" href="#Concave-hull-(alpha-shape)" title="Link to this heading">#</a></h2>
+<p>In some cases the convex hull does not yield good results - this is when the shape of the polygon should be concave instead of convex. The solution is a concave hull that is also called alpha shape. Yet, there is no ready to go, off the shelve solution for this but there are great resources (see: <a class="reference external" href="https://web.archive.org/web/20191207074940/http://blog.thehumangeo.com/2014/05/12/drawing-boundaries-in-python/">https://web.archive.org/web/20191207074940/http://blog.thehumangeo.com/2014/05/12/drawing-boundaries-in-python/</a>, accessed 04.01.2019.</p>
+</section>
+<section id="Putting-it-together">
+<h2>Putting it together<a class="headerlink" href="#Putting-it-together" title="Link to this heading">#</a></h2>
+<p>Just putting it all together…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize map</span>
+<span class="n">my_map_global</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.2460683</span><span class="p">,</span> <span class="mf">9.26764125</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="c1"># Create a convex hull polygon that contains some points</span>
+<span class="n">list_of_points</span> <span class="o">=</span> <span class="n">randome_points</span><span class="p">(</span>
+    <span class="n">amount</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">LON_min</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span> <span class="n">LON_max</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span> <span class="n">LAT_min</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">LAT_max</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="n">create_convexhull_polygon</span><span class="p">(</span>
+    <span class="n">my_map_global</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example convex hull"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"lightblue"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"lightskyblue"</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example convex hull"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">draw_points</span><span class="p">(</span>
+    <span class="n">my_map_global</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example points for convex hull"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"royalblue"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"royalblue"</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example point for convex hull"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Create an envelope polygon that contains some points</span>
+<span class="n">list_of_points</span> <span class="o">=</span> <span class="n">randome_points</span><span class="p">(</span>
+    <span class="n">amount</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">LON_min</span><span class="o">=</span><span class="mf">49.1</span><span class="p">,</span> <span class="n">LON_max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">LAT_min</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">LAT_max</span><span class="o">=</span><span class="mi">9</span>
+<span class="p">)</span>
+
+<span class="n">create_envelope_polygon</span><span class="p">(</span>
+    <span class="n">my_map_global</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example envelope"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"indianred"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example envelope"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">draw_points</span><span class="p">(</span>
+    <span class="n">my_map_global</span><span class="p">,</span>
+    <span class="n">list_of_points</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Example points for envelope"</span><span class="p">,</span>
+    <span class="n">line_color</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span>
+    <span class="n">fill_color</span><span class="o">=</span><span class="s2">"darkred"</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">"Example point for envelope"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Add layer control and show map</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">my_map_global</span><span class="p">)</span>
+<span class="n">my_map_global</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_5b8b0c1951022b65121799ef2a1a7373 {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+
+&lt;/head&gt;
+&lt;body&gt;
+
+
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_5b8b0c1951022b65121799ef2a1a7373&quot; &gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;script&gt;
+
+
+            var map_5b8b0c1951022b65121799ef2a1a7373 = L.map(
+                &quot;map_5b8b0c1951022b65121799ef2a1a7373&quot;,
+                {
+                    center: [48.2460683, 9.26764125],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 7,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+
+
+
+
+            var tile_layer_b8b71165dac3ad7daa1c95295e995b79 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+
+
+            tile_layer_b8b71165dac3ad7daa1c95295e995b79.addTo(map_5b8b0c1951022b65121799ef2a1a7373);
+
+
+            var feature_group_0d80e0a5c4b302d629292d720bf03e7a = L.featureGroup(
+                {
+}
+            );
+
+
+            var polygon_41b56c80aa9bf13dd4ec285be7e3332d = L.polygon(
+                [[48.878162942111985, 9.24931778825626], [48.102808224578084, 9.999729649069197], [48.112093018563584, 9.670295825805784], [48.36435043043604, 9.04950693059911], [48.87624824518485, 9.101063448742455]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;lightblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lightskyblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 5}
+            ).addTo(feature_group_0d80e0a5c4b302d629292d720bf03e7a);
+
+
+        var popup_b61e0422392c9b0e2a30490fa370338e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_6f637bd1017cd0fddbcb1ed03703b3e8 = $(`&lt;div id=&quot;html_6f637bd1017cd0fddbcb1ed03703b3e8&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example convex hull&lt;/div&gt;`)[0];
+                popup_b61e0422392c9b0e2a30490fa370338e.setContent(html_6f637bd1017cd0fddbcb1ed03703b3e8);
+
+
+
+        polygon_41b56c80aa9bf13dd4ec285be7e3332d.bindPopup(popup_b61e0422392c9b0e2a30490fa370338e)
+        ;
+
+
+
+
+            feature_group_0d80e0a5c4b302d629292d720bf03e7a.addTo(map_5b8b0c1951022b65121799ef2a1a7373);
+
+
+            var feature_group_9a28bb4476302afcaa4d9007578993b7 = L.featureGroup(
+                {
+}
+            );
+
+
+            var circle_marker_b367cde62999c40a4bb13e20a50982b1 = L.circleMarker(
+                [48.16275665819713, 9.749709140221823],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_22a2cf2582ec9c16e6b06dc89ba8d311 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_8ff3e51852ffc55278d15c8fe348637c = $(`&lt;div id=&quot;html_8ff3e51852ffc55278d15c8fe348637c&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_22a2cf2582ec9c16e6b06dc89ba8d311.setContent(html_8ff3e51852ffc55278d15c8fe348637c);
+
+
+
+        circle_marker_b367cde62999c40a4bb13e20a50982b1.bindPopup(popup_22a2cf2582ec9c16e6b06dc89ba8d311)
+        ;
+
+
+
+
+            var circle_marker_50a3b43d193719dab95175ca23072ea1 = L.circleMarker(
+                [48.878162942111985, 9.24931778825626],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_0813c373d18f64148d83c1922c67322d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_2ed2a6091cc6bcc00720b12177b20ba9 = $(`&lt;div id=&quot;html_2ed2a6091cc6bcc00720b12177b20ba9&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_0813c373d18f64148d83c1922c67322d.setContent(html_2ed2a6091cc6bcc00720b12177b20ba9);
+
+
+
+        circle_marker_50a3b43d193719dab95175ca23072ea1.bindPopup(popup_0813c373d18f64148d83c1922c67322d)
+        ;
+
+
+
+
+            var circle_marker_666e5127ce1b4b0a6712622acb85451d = L.circleMarker(
+                [48.102808224578084, 9.999729649069197],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_0485776cd58a2a64bd5af1c5f30f7c3e = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_a03b78f8521f15e5bc1c240f50b24169 = $(`&lt;div id=&quot;html_a03b78f8521f15e5bc1c240f50b24169&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_0485776cd58a2a64bd5af1c5f30f7c3e.setContent(html_a03b78f8521f15e5bc1c240f50b24169);
+
+
+
+        circle_marker_666e5127ce1b4b0a6712622acb85451d.bindPopup(popup_0485776cd58a2a64bd5af1c5f30f7c3e)
+        ;
+
+
+
+
+            var circle_marker_a03bb67b31a3c8459e69c70b3175a395 = L.circleMarker(
+                [48.87624824518485, 9.101063448742455],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_60e15a3d0eda443b51e223e210f03092 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_c83a7aa759405f9d7dcbd9b1967a2f1a = $(`&lt;div id=&quot;html_c83a7aa759405f9d7dcbd9b1967a2f1a&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_60e15a3d0eda443b51e223e210f03092.setContent(html_c83a7aa759405f9d7dcbd9b1967a2f1a);
+
+
+
+        circle_marker_a03bb67b31a3c8459e69c70b3175a395.bindPopup(popup_60e15a3d0eda443b51e223e210f03092)
+        ;
+
+
+
+
+            var circle_marker_2cfa02a15daadbf4de51ff367d44632e = L.circleMarker(
+                [48.36435043043604, 9.04950693059911],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_5c66c9ee7933e42d2de8baee51cba87d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_b5148f8186d052ffb119a3a7699b7a36 = $(`&lt;div id=&quot;html_b5148f8186d052ffb119a3a7699b7a36&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_5c66c9ee7933e42d2de8baee51cba87d.setContent(html_b5148f8186d052ffb119a3a7699b7a36);
+
+
+
+        circle_marker_2cfa02a15daadbf4de51ff367d44632e.bindPopup(popup_5c66c9ee7933e42d2de8baee51cba87d)
+        ;
+
+
+
+
+            var circle_marker_b29c7665710a6f3a3e1e22f8b8d57611 = L.circleMarker(
+                [48.591188652368736, 9.335990012146363],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_eb9b602a37713bca3b0be9a2f8280a42 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_eff686e63eef8421b92369e18aea625d = $(`&lt;div id=&quot;html_eff686e63eef8421b92369e18aea625d&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_eb9b602a37713bca3b0be9a2f8280a42.setContent(html_eff686e63eef8421b92369e18aea625d);
+
+
+
+        circle_marker_b29c7665710a6f3a3e1e22f8b8d57611.bindPopup(popup_eb9b602a37713bca3b0be9a2f8280a42)
+        ;
+
+
+
+
+            var circle_marker_6b8fcb22faae055ca4bfecd34107d8f1 = L.circleMarker(
+                [48.112093018563584, 9.670295825805784],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_30820915ca2f66e48cbfd9a25f207aad = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_0dbf2f5e9547aeea6c539b7305949235 = $(`&lt;div id=&quot;html_0dbf2f5e9547aeea6c539b7305949235&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_30820915ca2f66e48cbfd9a25f207aad.setContent(html_0dbf2f5e9547aeea6c539b7305949235);
+
+
+
+        circle_marker_6b8fcb22faae055ca4bfecd34107d8f1.bindPopup(popup_30820915ca2f66e48cbfd9a25f207aad)
+        ;
+
+
+
+
+            var circle_marker_b3254fb2b68d284dd14b577777b959d2 = L.circleMarker(
+                [48.45572606407151, 9.227867967011727],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_5134276692d9391fb09feb3b48d04f4c = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_49633db69d01b5c9bc80979870d1e789 = $(`&lt;div id=&quot;html_49633db69d01b5c9bc80979870d1e789&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_5134276692d9391fb09feb3b48d04f4c.setContent(html_49633db69d01b5c9bc80979870d1e789);
+
+
+
+        circle_marker_b3254fb2b68d284dd14b577777b959d2.bindPopup(popup_5134276692d9391fb09feb3b48d04f4c)
+        ;
+
+
+
+
+            var circle_marker_cb652190494aa3ae260e042b100c11c1 = L.circleMarker(
+                [48.56447856610419, 9.278669728382454],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_9b5d118d6469794f19a0f6cb17d97571 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_e4157c5c8858ab712706b3485c6a928f = $(`&lt;div id=&quot;html_e4157c5c8858ab712706b3485c6a928f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_9b5d118d6469794f19a0f6cb17d97571.setContent(html_e4157c5c8858ab712706b3485c6a928f);
+
+
+
+        circle_marker_cb652190494aa3ae260e042b100c11c1.bindPopup(popup_9b5d118d6469794f19a0f6cb17d97571)
+        ;
+
+
+
+
+            var circle_marker_1da5c4f1838c4c20550224ba2802360d = L.circleMarker(
+                [48.40832699433997, 9.357283936312472],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;royalblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;royalblue&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_9a28bb4476302afcaa4d9007578993b7);
+
+
+        var popup_c542b39722b3ca1ee24d1f49b61326e1 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_9c1e3d63181e7c8f89fa493616e86058 = $(`&lt;div id=&quot;html_9c1e3d63181e7c8f89fa493616e86058&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for convex hull&lt;/div&gt;`)[0];
+                popup_c542b39722b3ca1ee24d1f49b61326e1.setContent(html_9c1e3d63181e7c8f89fa493616e86058);
+
+
+
+        circle_marker_1da5c4f1838c4c20550224ba2802360d.bindPopup(popup_c542b39722b3ca1ee24d1f49b61326e1)
+        ;
+
+
+
+
+            feature_group_9a28bb4476302afcaa4d9007578993b7.addTo(map_5b8b0c1951022b65121799ef2a1a7373);
+
+
+            var feature_group_2581f5b03c2d18d395fbff354fa52461 = L.featureGroup(
+                {
+}
+            );
+
+
+            var polygon_dff5b24621289e83c451ebb9acd5554f = L.polygon(
+                [[49.367135534485875, 8.798539727917506], [49.952798121502255, 8.798539727917506], [49.952798121502255, 8.09466340782296], [49.367135534485875, 8.09466340782296]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;indianred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 5}
+            ).addTo(feature_group_2581f5b03c2d18d395fbff354fa52461);
+
+
+        var popup_cd58dd932a0589c3ba9b13cd665d3f9d = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_e99adb1dc92504c400512e918b855df9 = $(`&lt;div id=&quot;html_e99adb1dc92504c400512e918b855df9&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example envelope&lt;/div&gt;`)[0];
+                popup_cd58dd932a0589c3ba9b13cd665d3f9d.setContent(html_e99adb1dc92504c400512e918b855df9);
+
+
+
+        polygon_dff5b24621289e83c451ebb9acd5554f.bindPopup(popup_cd58dd932a0589c3ba9b13cd665d3f9d)
+        ;
+
+
+
+
+            feature_group_2581f5b03c2d18d395fbff354fa52461.addTo(map_5b8b0c1951022b65121799ef2a1a7373);
+
+
+            var feature_group_608fd40ca1a75cf121d01661723fbc54 = L.featureGroup(
+                {
+}
+            );
+
+
+            var circle_marker_bf21673545fa99c627305732f994a578 = L.circleMarker(
+                [49.52932822710512, 8.412658265537237],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_daf06c4f16d81d7584b32d0aea3a2bf5 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_4179e830f50f086922e4862bdcc3eb86 = $(`&lt;div id=&quot;html_4179e830f50f086922e4862bdcc3eb86&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_daf06c4f16d81d7584b32d0aea3a2bf5.setContent(html_4179e830f50f086922e4862bdcc3eb86);
+
+
+
+        circle_marker_bf21673545fa99c627305732f994a578.bindPopup(popup_daf06c4f16d81d7584b32d0aea3a2bf5)
+        ;
+
+
+
+
+            var circle_marker_c21175c4bf6fef8e16712e02790fa453 = L.circleMarker(
+                [49.39646501389067, 8.364187408303033],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_d8628a45cff993486298df49898d0f49 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_dcfd95d3266ecd6c1201d158b9df86c1 = $(`&lt;div id=&quot;html_dcfd95d3266ecd6c1201d158b9df86c1&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_d8628a45cff993486298df49898d0f49.setContent(html_dcfd95d3266ecd6c1201d158b9df86c1);
+
+
+
+        circle_marker_c21175c4bf6fef8e16712e02790fa453.bindPopup(popup_d8628a45cff993486298df49898d0f49)
+        ;
+
+
+
+
+            var circle_marker_8ac025438650831438af99c0271033e5 = L.circleMarker(
+                [49.91169384688771, 8.09466340782296],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_f35df72145f19d70b4697456ba261b80 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_b4de1c8a69662e97359d5053a545498c = $(`&lt;div id=&quot;html_b4de1c8a69662e97359d5053a545498c&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_f35df72145f19d70b4697456ba261b80.setContent(html_b4de1c8a69662e97359d5053a545498c);
+
+
+
+        circle_marker_8ac025438650831438af99c0271033e5.bindPopup(popup_f35df72145f19d70b4697456ba261b80)
+        ;
+
+
+
+
+            var circle_marker_6fe87c16a7c86e96752faabbe1fc0df6 = L.circleMarker(
+                [49.81653486718577, 8.421718198052407],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_e768dcb0c0fb00c81269fc8cf7029493 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_2fa475e9322408738b660c4aaa70b9b9 = $(`&lt;div id=&quot;html_2fa475e9322408738b660c4aaa70b9b9&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_e768dcb0c0fb00c81269fc8cf7029493.setContent(html_2fa475e9322408738b660c4aaa70b9b9);
+
+
+
+        circle_marker_6fe87c16a7c86e96752faabbe1fc0df6.bindPopup(popup_e768dcb0c0fb00c81269fc8cf7029493)
+        ;
+
+
+
+
+            var circle_marker_b5b41db5252eaa6ef2a6ebd6d54f1bae = L.circleMarker(
+                [49.367135534485875, 8.67540071956376],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_0d4e04fe4cbffaed8657982d2413f514 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_c8b31c19fc9eaf344e3b080c7357bf09 = $(`&lt;div id=&quot;html_c8b31c19fc9eaf344e3b080c7357bf09&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_0d4e04fe4cbffaed8657982d2413f514.setContent(html_c8b31c19fc9eaf344e3b080c7357bf09);
+
+
+
+        circle_marker_b5b41db5252eaa6ef2a6ebd6d54f1bae.bindPopup(popup_0d4e04fe4cbffaed8657982d2413f514)
+        ;
+
+
+
+
+            var circle_marker_d1310f5c0cd199be20a360a2d1aec151 = L.circleMarker(
+                [49.4815042975217, 8.543454302289229],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_ab7ec23c24bcb14db1a4049b9993ad38 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_0c4da1f3379d6a38d8f2b6884452fcaf = $(`&lt;div id=&quot;html_0c4da1f3379d6a38d8f2b6884452fcaf&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_ab7ec23c24bcb14db1a4049b9993ad38.setContent(html_0c4da1f3379d6a38d8f2b6884452fcaf);
+
+
+
+        circle_marker_d1310f5c0cd199be20a360a2d1aec151.bindPopup(popup_ab7ec23c24bcb14db1a4049b9993ad38)
+        ;
+
+
+
+
+            var circle_marker_133150f1f1eec11fc7ad7b8fe8a4041d = L.circleMarker(
+                [49.54418795455253, 8.20461639358592],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_ad401c11fda9d776dceb2ce2d43bc5de = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_eb5295434434ef37cb1528948201e6e8 = $(`&lt;div id=&quot;html_eb5295434434ef37cb1528948201e6e8&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_ad401c11fda9d776dceb2ce2d43bc5de.setContent(html_eb5295434434ef37cb1528948201e6e8);
+
+
+
+        circle_marker_133150f1f1eec11fc7ad7b8fe8a4041d.bindPopup(popup_ad401c11fda9d776dceb2ce2d43bc5de)
+        ;
+
+
+
+
+            var circle_marker_da76f7b8d341cf64724559e5495b6e4c = L.circleMarker(
+                [49.60773165448703, 8.798539727917506],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_b44d2565ff39852b2884c4831e0b4a90 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_b1d09a346e9a31a7424a9229900a6037 = $(`&lt;div id=&quot;html_b1d09a346e9a31a7424a9229900a6037&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_b44d2565ff39852b2884c4831e0b4a90.setContent(html_b1d09a346e9a31a7424a9229900a6037);
+
+
+
+        circle_marker_da76f7b8d341cf64724559e5495b6e4c.bindPopup(popup_b44d2565ff39852b2884c4831e0b4a90)
+        ;
+
+
+
+
+            var circle_marker_72b366d67f8b5ccb7e67fec623ff5614 = L.circleMarker(
+                [49.63286737304367, 8.564684458148976],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_3fe32a17487b391b6cfaea1142a86c06 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_9d744ac17394b4f53fb1350a531a657b = $(`&lt;div id=&quot;html_9d744ac17394b4f53fb1350a531a657b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_3fe32a17487b391b6cfaea1142a86c06.setContent(html_9d744ac17394b4f53fb1350a531a657b);
+
+
+
+        circle_marker_72b366d67f8b5ccb7e67fec623ff5614.bindPopup(popup_3fe32a17487b391b6cfaea1142a86c06)
+        ;
+
+
+
+
+            var circle_marker_5d49191fa090f84187eb98b32bdfc8f5 = L.circleMarker(
+                [49.952798121502255, 8.395311172720696],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;darkred&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;darkred&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 1, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_608fd40ca1a75cf121d01661723fbc54);
+
+
+        var popup_f40fd7fb4ec9fa78686d1e1b4f3599d4 = L.popup({
+  &quot;maxWidth&quot;: &quot;100%&quot;,
+});
+
+
+
+                var html_cefd9e652b9c70b5cf39a37afadad844 = $(`&lt;div id=&quot;html_cefd9e652b9c70b5cf39a37afadad844&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Example point for envelope&lt;/div&gt;`)[0];
+                popup_f40fd7fb4ec9fa78686d1e1b4f3599d4.setContent(html_cefd9e652b9c70b5cf39a37afadad844);
+
+
+
+        circle_marker_5d49191fa090f84187eb98b32bdfc8f5.bindPopup(popup_f40fd7fb4ec9fa78686d1e1b4f3599d4)
+        ;
+
+
+
+
+            feature_group_608fd40ca1a75cf121d01661723fbc54.addTo(map_5b8b0c1951022b65121799ef2a1a7373);
+
+
+            var layer_control_b4999eea51a8dad6157b985e652f04e7_layers = {
+                base_layers : {
+                    &quot;openstreetmap&quot; : tile_layer_b8b71165dac3ad7daa1c95295e995b79,
+                },
+                overlays :  {
+                    &quot;Example convex hull&quot; : feature_group_0d80e0a5c4b302d629292d720bf03e7a,
+                    &quot;Example points for convex hull&quot; : feature_group_9a28bb4476302afcaa4d9007578993b7,
+                    &quot;Example envelope&quot; : feature_group_2581f5b03c2d18d395fbff354fa52461,
+                    &quot;Example points for envelope&quot; : feature_group_608fd40ca1a75cf121d01661723fbc54,
+                },
+            };
+            let layer_control_b4999eea51a8dad6157b985e652f04e7 = L.control.layers(
+                layer_control_b4999eea51a8dad6157b985e652f04e7_layers.base_layers,
+                layer_control_b4999eea51a8dad6157b985e652f04e7_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: false,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_5b8b0c1951022b65121799ef2a1a7373);
+
+
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
+</div>
+</section>
+<section id="Sources:">
+<h2>Sources:<a class="headerlink" href="#Sources:" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://web.archive.org/web/20200222150431/http://blog.yhat.com/posts/interactive-geospatial-analysis.html">https://web.archive.org/web/20200222150431/http://blog.yhat.com/posts/interactive-geospatial-analysis.html</a>, accessed 28.12.2018</p></li>
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.spatial.ConvexHull.html">https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.spatial.ConvexHull.html</a>, accessed 29.12.2018</p></li>
+<li><p><a class="reference external" href="https://web.archive.org/web/20191207074940/http://blog.thehumangeo.com/2014/05/12/drawing-boundaries-in-python/">https://web.archive.org/web/20191207074940/http://blog.thehumangeo.com/2014/05/12/drawing-boundaries-in-python/</a>, accessed 04.01.2019</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="piechart_icons.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Piechart icons</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="customize_javascript_and_css.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Customizing javascript or css resources</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Helpers">Helpers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Convex-hull">Convex hull</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Envelope">Envelope</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Concave-hull-(alpha-shape)">Concave hull (alpha shape)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Putting-it-together">Putting it together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Sources:">Sources:</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/advanced_guide/polygons_from_list_of_points.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+Folium version 0.1.dev2227+g7a10fcca2</div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2013-2026, Rob Story.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.2.0.
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
