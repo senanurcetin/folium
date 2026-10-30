@@ -52,7 +52,10 @@ jobs:
     - name: Install folium from source
       run: |
         cd folium
-        python -m pip install -e . --no-deps --force-reinstall
+        # Fork-only checkout lacks upstream release tags; assign the compatible
+        # API version for this integration test so GeoPandas selects its
+        # modern Folium option contract (zoom_control, not zoomControl).
+        SETUPTOOLS_SCM_PRETEND_VERSION_FOR_FOLIUM=0.20.0.dev0 python -m pip install -e . --no-deps --force-reinstall
 
     - name: Run Geopandas tests
       run: |

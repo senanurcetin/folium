@@ -13,7 +13,8 @@ on:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    # Playwright does not yet support the ubuntu-26.04 runner image.
+    runs-on: ubuntu-24.04
     defaults:
       run:
         shell: bash -l {0}
