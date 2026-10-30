@@ -27,17 +27,14 @@ jobs:
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       with:
-        # Should be enough for setuptools-scm
-        fetch-depth: 100
+        # setuptools-scm needs reachable release tags and complete history.
+        fetch-depth: 0
         persist-credentials: false
 
     - name: Set up Python
       uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
       with:
         python-version: "3.x"
-
-    - name: Get tags
-      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
     - name: Install build tools
       run: |
